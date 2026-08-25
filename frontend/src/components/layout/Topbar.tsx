@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Menu, X, Zap, Bell, Search } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { GoogleAuthButton } from '../GoogleAuthButton';
 
 interface TopbarProps {
   onToggleMobileMenu: () => void;
@@ -38,15 +39,8 @@ export const Topbar: React.FC<TopbarProps> = ({ onToggleMobileMenu, isMobileOpen
 
         <div className="h-4 w-px bg-slate-800 hidden sm:block" />
 
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-blue-400">
-            AS
-          </div>
-          <div className="hidden sm:block text-left">
-            <p className="text-xs font-semibold text-slate-200 leading-tight">Aarav Sharma</p>
-            <p className="text-[10px] text-slate-400 leading-tight">Backend Aspirant</p>
-          </div>
-        </div>
+        {/* Google OAuth JWT Authentication Button */}
+        <GoogleAuthButton />
 
         <NavLink to="/">
           <Button variant="outline" size="sm">

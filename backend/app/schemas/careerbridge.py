@@ -12,6 +12,14 @@ class AuthLoginRequest(BaseModel):
     email: str
     password: str
 
+class GoogleAuthRequest(BaseModel):
+    id_token: Optional[str] = None
+    credential: Optional[str] = None
+    email: Optional[str] = None
+    full_name: Optional[str] = None
+    picture: Optional[str] = None
+    role: str = "candidate"
+
 class AuthTokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
@@ -19,6 +27,7 @@ class AuthTokenResponse(BaseModel):
     email: str
     full_name: str
     role: str
+    picture: Optional[str] = None
 
 # Skill Schemas
 class SkillSchema(BaseModel):

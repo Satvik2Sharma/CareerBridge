@@ -20,14 +20,12 @@ def test_workflow_1_resume_upload_and_auto_profile_sync():
 
 def test_workflow_2_job_search_and_matching_engine():
     """TEST 2: Search jobs, get recommendation with 5-factor match score & skill breakdown"""
-    # 1. Fetch Jobs
     res_jobs = client.get("/api/v1/jobs")
     assert res_jobs.status_code == 200
     jobs_data = res_jobs.json()
     assert "jobs" in jobs_data
     assert len(jobs_data["jobs"]) > 0
 
-    # 2. Get Match Recommendations
     user_profile = {
         "user_id": "demo-aarav",
         "name": "Aarav Sharma",
@@ -48,7 +46,6 @@ def test_workflow_2_job_search_and_matching_engine():
 
 def test_workflow_3_government_jobs_and_eligibility_engine():
     """TEST 3: Check UPSC/SSC government recruitment eligibility with category age relaxation rules"""
-    # Age 32, OBC category (+3 yrs relaxation -> effective limit 33 -> Eligible)
     payload = {
         "age": 32,
         "degree": "B.Tech",
@@ -64,14 +61,12 @@ def test_workflow_3_government_jobs_and_eligibility_engine():
 
 def test_workflow_4_career_explorer_skill_gap_and_roadmap():
     """TEST 4: Skill gap analysis and personalized roadmap generation"""
-    # 1. Skill Gap Analysis
     res_gap = client.post("/api/v1/skill-gap/analyze?job_id=job-101", json=["Python", "SQL", "Git"])
     assert res_gap.status_code == 200
     data_gap = res_gap.json()
     assert "all_skill_states" in data_gap
     assert "prioritized_gaps" in data_gap
 
-    # 2. Roadmap Generation
     payload_road = {
         "user_profile": {
             "name": "Aarav Sharma",
@@ -113,3 +108,20 @@ def test_workflow_6_msme_digital_maturity_and_growth_roadmap():
     assert "digital_maturity_score" in data
     assert "category_scores" in data
     assert data["digital_maturity_score"] > 0
+
+def test_workflow_7_google_jwt_authentication():
+    """TEST 7: Authenticate user using Google OAuth ID token & receive signed JWT bearer token"""
+    google_auth_payload = {
+        "credential": "mock_google_id_token_xyz123",
+        "email": "aarav.sharma@gmail.com",
+        "full_name": "Aarav Sharma",
+        "picture": "https://lh3.googleusercontent.com/a/default-user-avatar",
+        "role": "candidate"
+    }
+    res = client.post("/api/v1/auth/google", json=google_auth_payload)
+    assert res.status_code == 200
+    data = res.json()
+    assert "access_token" in data
+    assert data["token_type"] == "bearer"
+    assert data["email"] == "aarav.sharma@gmail.com"
+    assert data["full_name"] == "Aarav Sharma"

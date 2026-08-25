@@ -20,6 +20,7 @@ import {
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
+import { GoogleAuthButton } from '../components/GoogleAuthButton';
 
 export const LandingPage: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -66,6 +67,9 @@ export const LandingPage: React.FC = () => {
           <NavLink to="/business/dashboard" className="text-xs font-semibold text-slate-300 hover:text-white px-3 py-2 hidden sm:block">
             MSME Portal
           </NavLink>
+
+          <GoogleAuthButton />
+
           <NavLink to="/career/dashboard">
             <Button variant="primary" size="sm" rightIcon={<ChevronRight className="w-4 h-4" />}>
               Launch Platform
@@ -101,20 +105,20 @@ export const LandingPage: React.FC = () => {
             </span>
           </h1>
 
-          <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            CareerBridge intelligently matches job seekers to private & government opportunities with transparent match scoring, while empowering MSMEs with digital maturity scoring and actionable 90-day growth blueprints.
+          <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+            CareerBridge is an AI-powered SaaS engine for candidates seeking verified career roadmaps, job match scoring, and government opportunity eligibility — and for MSMEs scaling digital operations.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <NavLink to="/career/dashboard" className="w-full sm:w-auto">
-              <Button variant="primary" size="lg" className="w-full sm:w-auto text-sm font-bold" leftIcon={<Briefcase className="w-5 h-5" />} rightIcon={<ChevronRight className="w-4 h-4" />}>
-                BUILD MY CAREER
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <NavLink to="/career/dashboard">
+              <Button variant="primary" size="lg" rightIcon={<ChevronRight className="w-4 h-4" />}>
+                Candidate Intelligence
               </Button>
             </NavLink>
 
-            <NavLink to="/business/dashboard" className="w-full sm:w-auto">
-              <Button variant="secondary" size="lg" className="w-full sm:w-auto text-sm font-bold border-emerald-500/40 text-emerald-300" leftIcon={<Building2 className="w-5 h-5 text-emerald-400" />} rightIcon={<ChevronRight className="w-4 h-4 text-emerald-400" />}>
-                GROW MY BUSINESS
+            <NavLink to="/business/dashboard">
+              <Button variant="outline" size="lg" leftIcon={<Building2 className="w-4 h-4 text-emerald-400" />}>
+                MSME Digital Diagnostics
               </Button>
             </NavLink>
           </div>
@@ -122,139 +126,141 @@ export const LandingPage: React.FC = () => {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
-          {stats.map((s, idx) => {
-            const Icon = s.icon;
+          {stats.map((st) => {
+            const Icon = st.icon;
             return (
-              <Card key={idx} className="p-5 text-center space-y-1">
-                <Icon className={`w-6 h-6 mx-auto mb-1 ${s.color}`} />
-                <h4 className="text-2xl font-extrabold text-slate-100 tracking-tight">{s.value}</h4>
-                <p className="text-xs text-slate-400">{s.label}</p>
+              <Card key={st.label} className="p-5 text-center space-y-2 hover:border-slate-700 transition-all">
+                <Icon className={`w-6 h-6 mx-auto ${st.color}`} />
+                <h4 className="text-2xl font-black text-slate-100">{st.value}</h4>
+                <p className="text-xs text-slate-400 font-medium">{st.label}</p>
               </Card>
             );
           })}
         </div>
 
-        {/* Dual Pillar Platform Showcase */}
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Pillar 1: Candidate Intelligence */}
-          <Card hoverEffect className="p-8 space-y-6 border-slate-800 hover:border-blue-500/40">
-            <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20">
-              <Briefcase className="w-6 h-6" />
-            </div>
+        {/* Key Features Section */}
+        <div className="space-y-10">
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl font-bold text-slate-100">Dual-Intelligence Platform Architecture</h2>
+            <p className="text-xs text-slate-400 max-w-lg mx-auto">
+              Empowering both job-seeking candidates and small enterprises with actionable intelligence.
+            </p>
+          </div>
 
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-400">PILLAR 1: CANDIDATE PORTAL</span>
-              <h2 className="text-2xl font-bold text-slate-100 mt-1">Career & Job Intelligence</h2>
-              <p className="text-xs text-slate-300 mt-2 leading-relaxed">
-                Upload your resume or build your skill profile. Get explainable 5-tier job compatibility match scores, 3-state skill gap analysis, government eligibility evaluations, and personalized learning roadmaps.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Candidate Portal Card */}
+            <Card className="p-8 space-y-6 border-blue-900/40 bg-gradient-to-b from-blue-950/20 to-slate-900/60">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400">
+                  <Compass className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-slate-100">Candidate Employability Portal</h3>
+                  <p className="text-xs text-slate-400">Skill verification, matching, & career growth</p>
+                </div>
+              </div>
 
-            <ul className="space-y-3 text-xs text-slate-300 pt-2 border-t border-slate-800">
-              <li className="flex items-center gap-2.5">
-                <Zap className="w-4 h-4 text-blue-400 flex-shrink-0" />
-                <span>Deterministic 5-Weight Match Engine (Skill, Experience, Goal)</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Target className="w-4 h-4 text-blue-400 flex-shrink-0" />
-                <span>3-State Skill Gap Breakdown (Strong ✓, Partial ◐, Priority Gap ○)</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Award className="w-4 h-4 text-blue-400 flex-shrink-0" />
-                <span>Official UPSC / SSC Government Recruitment & Age Relaxation Checker</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <BookOpen className="w-4 h-4 text-blue-400 flex-shrink-0" />
-                <span>Personalized Learning Roadmap skipping already-mastered skills</span>
-              </li>
-            </ul>
+              <ul className="space-y-3 text-xs text-slate-300">
+                <li className="flex items-start gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span><strong>AI Resume Extractor:</strong> Automatic skill, experience, & education parsing.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span><strong>5-Factor Job Match Score:</strong> Transparent breakdown of required vs matched skills.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span><strong>Government Eligibility Checker:</strong> Age relaxation rules for UPSC, SSC, IBPS, RRB.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span><strong>Personalized 90-Day Roadmap:</strong> Weekly skill build milestones and practical tasks.</span>
+                </li>
+              </ul>
 
-            <NavLink to="/career/dashboard" className="block pt-2">
-              <Button variant="outline" className="w-full text-blue-300 border-blue-500/30" rightIcon={<ChevronRight className="w-4 h-4" />}>
-                Launch Candidate Portal
-              </Button>
-            </NavLink>
-          </Card>
+              <NavLink to="/career/dashboard" className="block pt-2">
+                <Button variant="primary" size="sm" className="w-full" rightIcon={<ChevronRight className="w-4 h-4" />}>
+                  Explore Candidate Tools
+                </Button>
+              </NavLink>
+            </Card>
 
-          {/* Pillar 2: MSME Growth Intelligence */}
-          <Card hoverEffect className="p-8 space-y-6 border-slate-800 hover:border-emerald-500/40">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
-              <Building2 className="w-6 h-6" />
-            </div>
+            {/* MSME Portal Card */}
+            <Card className="p-8 space-y-6 border-emerald-900/40 bg-gradient-to-b from-emerald-950/20 to-slate-900/60">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-600/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+                  <Building2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-slate-100">MSME Digital Growth Portal</h3>
+                  <p className="text-xs text-slate-400">Digital maturity scoring & tech transformation</p>
+                </div>
+              </div>
 
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">PILLAR 2: MSME PORTAL</span>
-              <h2 className="text-2xl font-bold text-slate-100 mt-1">MSME Growth Intelligence</h2>
-              <p className="text-xs text-slate-300 mt-2 leading-relaxed">
-                Diagnose your store's digital maturity across 6 key operational dimensions. Receive cost-effective technology tool recommendations and an actionable 90-day growth execution blueprint.
-              </p>
-            </div>
+              <ul className="space-y-3 text-xs text-slate-300">
+                <li className="flex items-start gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span><strong>0–100 Digital Maturity Diagnostic:</strong> Evaluate tech readiness across 6 operational areas.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span><strong>Low-Cost Tech Recommendations:</strong> Tailored tools for inventory, payments, & marketing.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span><strong>30-60-90 Day Transformation Blueprint:</strong> Practical step-by-step business modernization.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span><strong>Local Talent Sourcing:</strong> Direct connection to skilled candidates in your area.</span>
+                </li>
+              </ul>
 
-            <ul className="space-y-3 text-xs text-slate-300 pt-2 border-t border-slate-800">
-              <li className="flex items-center gap-2.5">
-                <BarChart3 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <span>0–100 Digital Maturity Diagnostic Model & Category Breakdown</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Sparkles className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <span>Low-Cost Technology Recommendations (POS, Stock, WhatsApp Store)</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <TrendingUp className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <span>90-Day Digital Transformation Growth Blueprint</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <span>Pre-built Templates for Retail, Restaurant, & Kirana Enterprises</span>
-              </li>
-            </ul>
-
-            <NavLink to="/business/dashboard" className="block pt-2">
-              <Button variant="outline" className="w-full text-emerald-300 border-emerald-500/30" rightIcon={<ChevronRight className="w-4 h-4" />}>
-                Launch MSME Portal
-              </Button>
-            </NavLink>
-          </Card>
+              <NavLink to="/business/dashboard" className="block pt-2">
+                <Button variant="outline" size="sm" className="w-full text-emerald-400 border-emerald-800 hover:bg-emerald-950/40" rightIcon={<ChevronRight className="w-4 h-4" />}>
+                  Explore MSME Tools
+                </Button>
+              </NavLink>
+            </Card>
+          </div>
         </div>
 
-        {/* FAQ Accordion Section */}
-        <div className="max-w-4xl mx-auto space-y-6 pt-6">
+        {/* FAQ Accordion */}
+        <div className="max-w-3xl mx-auto space-y-6">
           <div className="text-center space-y-2">
-            <Badge variant="primary">Frequently Asked Questions</Badge>
-            <h2 className="text-2xl font-bold text-slate-100">Everything You Need to Know</h2>
+            <h3 className="text-xl font-bold text-slate-100">Frequently Asked Questions</h3>
+            <p className="text-xs text-slate-400">Everything you need to know about the CareerBridge platform.</p>
           </div>
 
           <div className="space-y-3">
             {faqs.map((faq, idx) => (
-              <Card
-                key={idx}
-                interactive
-                onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                className="p-5"
-              >
-                <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold text-slate-100 flex items-center gap-2">
-                    <HelpCircle className="w-4 h-4 text-blue-400" /> {faq.q}
-                  </h4>
-                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${openFaq === idx ? 'rotate-180' : ''}`} />
-                </div>
+              <div key={idx} className="bg-slate-900/80 border border-slate-800 rounded-xl overflow-hidden text-xs">
+                <button
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  className="w-full p-4 flex items-center justify-between text-left font-semibold text-slate-200 hover:text-white"
+                >
+                  <span>{faq.q}</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform ${openFaq === idx ? 'rotate-180 text-blue-400' : 'text-slate-400'}`} />
+                </button>
                 {openFaq === idx && (
-                  <p className="text-xs text-slate-300 mt-3 pt-3 border-t border-slate-800 leading-relaxed">
+                  <div className="px-4 pb-4 text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3">
                     {faq.a}
-                  </p>
+                  </div>
                 )}
-              </Card>
+              </div>
             ))}
           </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-400">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p>© 2026 CareerBridge — AI-Powered Employability & Opportunity Intelligence Platform</p>
-          <p className="font-semibold text-blue-400">HACKN'TECH 10.0 • Theme 8: Future of Work</p>
+      <footer className="border-t border-slate-900 bg-slate-950 py-8 px-6 text-center text-xs text-slate-400 space-y-2">
+        <div className="flex items-center justify-center gap-2 text-slate-300 font-semibold">
+          <Zap className="w-4 h-4 text-blue-500 fill-current" />
+          <span>CareerBridge AI Platform</span>
         </div>
+        <p>Built for HACKN'TECH 10.0 • COER University Hackathon 2026 • Theme: Future of Work</p>
       </footer>
     </div>
   );

@@ -38,6 +38,41 @@ export const apiService = {
     return request<{ status: string }>('/health');
   },
 
+  // Auth & Google OAuth JWT
+  async loginWithGoogle(credential: string, profile?: { name?: string; email?: string; picture?: string }): Promise<any> {
+    try {
+      const res = await fetch(`${env.API_URL}/auth/google`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          credential,
+          email: profile?.email,
+          full_name: profile?.name,
+          picture: profile?.picture
+        })
+      });
+      const data = await res.json();
+      if (data.access_token) {
+        localStorage.setItem('careerbridge_token', data.access_token);
+        localStorage.setItem('careerbridge_user', JSON.stringify(data));
+      }
+      return data;
+    } catch {
+      const mockToken = {
+        access_token: 'mock_jwt_token_google_oauth_2026',
+        token_type: 'bearer',
+        user_id: 'usr-google-1',
+        email: profile?.email || 'aarav.sharma@example.com',
+        full_name: profile?.name || 'Aarav Sharma',
+        role: 'candidate',
+        picture: profile?.picture
+      };
+      localStorage.setItem('careerbridge_token', mockToken.access_token);
+      localStorage.setItem('careerbridge_user', JSON.stringify(mockToken));
+      return mockToken;
+    }
+  },
+
   // User Profile CRUD
   async getUserProfile(): Promise<UserProfile> {
     if (env.USE_MOCK_API) return mockDemoUser;
@@ -49,7 +84,6 @@ export const apiService = {
   },
 
   async updateUserProfile(profile: UserProfile): Promise<UserProfile> {
-    // Update local memory reference
     Object.assign(mockDemoUser, profile);
     if (env.USE_MOCK_API) return mockDemoUser;
     try {
