@@ -1,14 +1,14 @@
 import React from 'react';
-import { MSMERecommendation } from '../types';
-import { Lightbulb, TrendingUp, AlertTriangle, CheckCircle2, DollarSign } from 'lucide-react';
+import { BusinessRecommendation } from '../types';
+import { Lightbulb, TrendingUp, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 interface RecProps {
-  recommendations: MSMERecommendation[];
+  recommendations: BusinessRecommendation[];
 }
 
 export const MSMERecommendationsView: React.FC<RecProps> = ({ recommendations }) => {
   return (
-    <div className="glass-card rounded-2xl p-6 border border-slate-800 space-y-6">
+    <div className="bg-slate-900/60 rounded-2xl p-6 border border-slate-800 space-y-6">
       <div>
         <span className="text-xs font-semibold text-emerald-400 uppercase tracking-widest">
           AI Business Intelligence
@@ -33,7 +33,7 @@ export const MSMERecommendationsView: React.FC<RecProps> = ({ recommendations })
                   <span className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-300 font-extrabold text-xs flex items-center justify-center">
                     #{rec.priority}
                   </span>
-                  <h3 className="font-heading font-bold text-base text-white">{rec.title}</h3>
+                  <h3 className="font-bold text-base text-white">{rec.title}</h3>
                   <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">
                     {rec.category}
                   </span>
@@ -75,7 +75,7 @@ export const MSMERecommendationsView: React.FC<RecProps> = ({ recommendations })
                 <span className="flex items-center gap-1 text-emerald-300 font-semibold">
                   <TrendingUp className="w-3.5 h-3.5 text-emerald-400" /> {rec.expected_benefit}
                 </span>
-                <span className="text-[11px] text-slate-400">Cost: {rec.cost_category}</span>
+                <span className="text-[11px] text-slate-400">Cost: {rec.cost_category || 'Low Cost'}</span>
               </div>
             </div>
           );

@@ -1,0 +1,59 @@
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { Menu, X, Zap, Bell, Search } from 'lucide-react';
+import { Button } from '../ui/Button';
+
+interface TopbarProps {
+  onToggleMobileMenu: () => void;
+  isMobileOpen: boolean;
+}
+
+export const Topbar: React.FC<TopbarProps> = ({ onToggleMobileMenu, isMobileOpen }) => {
+  return (
+    <header className="h-16 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-6 flex items-center justify-between sticky top-0 z-30">
+      <div className="flex items-center gap-3">
+        <button
+          onClick={onToggleMobileMenu}
+          className="lg:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 focus:outline-none"
+          aria-label="Toggle menu"
+        >
+          {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+
+        <div className="relative hidden sm:block w-72">
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search skills, careers, jobs..."
+            className="w-full bg-slate-900/80 border border-slate-800 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
+          />
+        </div>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <button className="p-2 text-slate-400 hover:text-white hover:bg-slate-900 rounded-lg transition-colors relative">
+          <Bell className="w-4 h-4" />
+          <span className="w-2 h-2 bg-blue-500 rounded-full absolute top-1.5 right-1.5" />
+        </button>
+
+        <div className="h-4 w-px bg-slate-800 hidden sm:block" />
+
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-blue-400">
+            AS
+          </div>
+          <div className="hidden sm:block text-left">
+            <p className="text-xs font-semibold text-slate-200 leading-tight">Aarav Sharma</p>
+            <p className="text-[10px] text-slate-400 leading-tight">Backend Aspirant</p>
+          </div>
+        </div>
+
+        <NavLink to="/">
+          <Button variant="outline" size="sm">
+            Landing
+          </Button>
+        </NavLink>
+      </div>
+    </header>
+  );
+};

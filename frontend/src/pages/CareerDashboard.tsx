@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UserProfile, JobRecommendation, SkillGapAnalysis, CareerRecommendation, LearningRoadmapItem, Assessment, AssessmentResult } from '../types';
-import { api } from '../services/api';
+import { apiService } from '../services/api';
+import { mockDemoUser } from '../services/api/mockData';
 import { JobMatchCard } from '../components/JobMatchCard';
 import { SkillGapChart } from '../components/SkillGapChart';
 import { CareerComparison } from '../components/CareerComparison';
@@ -9,11 +10,18 @@ import { AssessmentQuizModal } from '../components/AssessmentQuizModal';
 import { Upload, User, Award, Briefcase, Zap, Plus, X, Sparkles, FileText, CheckCircle2 } from 'lucide-react';
 
 interface CareerDashboardProps {
-  userProfile: UserProfile;
-  setUserProfile: React.Dispatch<React.SetStateAction<UserProfile>>;
+  userProfile?: UserProfile;
+  setUserProfile?: React.Dispatch<React.SetStateAction<UserProfile>>;
 }
 
-export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, setUserProfile }) => {
+export const CareerDashboard: React.FC<CareerDashboardProps> = ({
+  userProfile: propUserProfile,
+  setUserProfile: propSetUserProfile
+}) => {
+  const [localProfile, setLocalProfile] = useState<UserProfile>(mockDemoUser);
+  const userProfile = propUserProfile || localProfile;
+  const setUserProfile = propSetUserProfile || setLocalProfile;
+
   const [activeTab, setActiveTab] = useState<'jobs' | 'gaps' | 'careers' | 'roadmap'>('jobs');
   const [recommendations, setRecommendations] = useState<JobRecommendation[]>([]);
   const [selectedJobId, setSelectedJobId] = useState<string>('job-1');
@@ -27,14 +35,12 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
   const [uploadingResume, setUploadingResume] = useState(false);
   const [loadingJobs, setLoadingJobs] = useState(false);
 
-  // Load Job Recommendations & Career paths whenever user profile changes
   useEffect(() => {
     loadRecommendations();
     loadCareerPaths();
     loadAssessments();
   }, [userProfile]);
 
-  // Load Skill Gap whenever selectedJobId or user profile changes
   useEffect(() => {
     if (selectedJobId) {
       loadSkillGap(selectedJobId);
@@ -44,7 +50,7 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
   const loadRecommendations = async () => {
     setLoadingJobs(true);
     try {
-      const res = await api.getJobRecommendations(userProfile);
+      const res = await apiService.getJobRecommendations(userProfile);
       if (res.top_recommendations && res.top_recommendations.length > 0) {
         setRecommendations(res.top_recommendations);
         if (!selectedJobId) {
@@ -60,7 +66,7 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
 
   const loadSkillGap = async (jobId: string) => {
     try {
-      const data = await api.getSkillGap(jobId, userProfile.skills);
+      const data = await apiService.getSkillGap(jobId, userProfile.skills);
       setGapAnalysis(data);
     } catch (e) {
       console.error(e);
@@ -69,12 +75,11 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
 
   const loadCareerPaths = async () => {
     try {
-      const res = await api.getCareerRecommendations(userProfile);
+      const res = await apiService.getCareerRecommendations(userProfile);
       if (res.career_recommendations) {
         setCareerPaths(res.career_recommendations);
-        // Load default roadmap for top career choice
         if (res.career_recommendations.length > 0) {
-          loadRoadmap(res.career_recommendations[0].title, res.career_recommendations[0].gaps);
+          loadRoadmap(res.career_recommendations[0].title);
         }
       }
     } catch (e) {
@@ -82,9 +87,9 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
     }
   };
 
-  const loadRoadmap = async (goal: string, gaps: string[]) => {
+  const loadRoadmap = async (goal: string) => {
     try {
-      const res = await api.getPersonalizedRoadmap(userProfile, goal, gaps);
+      const res = await apiService.getPersonalizedRoadmap(userProfile, goal);
       if (res.roadmap) {
         setRoadmap(res.roadmap);
       }
@@ -95,7 +100,7 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
 
   const loadAssessments = async () => {
     try {
-      const res = await api.getAssessments();
+      const res = await apiService.getAssessments();
       if (res.assessments) {
         setAssessments(res.assessments);
       }
@@ -111,15 +116,15 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
     try {
       const formData = new FormData();
       formData.append('file', file);
-      const parsed = await api.analyzeResume(formData);
+      const parsed = await apiService.analyzeResume(formData);
       
-      if (parsed.skills) {
+      if (parsed.detected_skills) {
         setUserProfile((prev) => ({
           ...prev,
-          name: parsed.name || prev.name,
-          skills: Array.from(new Set([...prev.skills, ...parsed.skills])),
-          projects: parsed.projects || prev.projects,
-          certifications: parsed.certifications || prev.certifications
+          name: parsed.extracted_profile?.name || prev.name,
+          skills: Array.from(new Set([...prev.skills, ...parsed.detected_skills])),
+          projects: parsed.extracted_profile?.projects || prev.projects,
+          certifications: parsed.extracted_profile?.certifications || prev.certifications
         }));
       }
     } catch (err) {
@@ -155,18 +160,10 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
     }
   };
 
-  const handleQuizSuccess = (result: AssessmentResult) => {
-    setUserProfile((prev) => ({
-      ...prev,
-      readiness_score: result.new_readiness_score,
-      skills: Array.from(new Set([...prev.skills, result.skill]))
-    }));
-  };
-
   return (
     <div className="space-y-8">
       {/* Top Banner Profile Summary & Readiness Gauge */}
-      <div className="glass-panel p-6 rounded-3xl border border-slate-800 flex flex-col lg:flex-row items-center justify-between gap-6">
+      <div className="bg-slate-900/60 p-6 rounded-3xl border border-slate-800 flex flex-col lg:flex-row items-center justify-between gap-6">
         <div className="space-y-2 text-center lg:text-left">
           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2">
             <span className="text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-500/10 px-2.5 py-0.5 rounded-full border border-blue-500/20">
@@ -174,7 +171,7 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
             </span>
             <span className="text-xs text-slate-400 font-medium">• {userProfile.education}</span>
           </div>
-          <h1 className="text-2xl font-bold font-heading text-white">{userProfile.name}</h1>
+          <h1 className="text-2xl font-bold text-white">{userProfile.name}</h1>
           <p className="text-xs text-slate-300">
             Target Career Goal: <strong className="text-blue-300">{userProfile.career_goal}</strong>
           </p>
@@ -218,9 +215,9 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
 
         {/* Readiness Score Ring & Upload Button */}
         <div className="flex items-center gap-6">
-          <div className="text-center bg-slate-900/90 p-4 rounded-2xl border border-blue-500/30 glow-blue">
+          <div className="text-center bg-slate-900/90 p-4 rounded-2xl border border-blue-500/30">
             <span className="text-[11px] font-bold uppercase text-slate-400 tracking-wider block">Career Readiness</span>
-            <div className="text-3xl font-extrabold font-heading text-white mt-0.5 flex items-center justify-center gap-1">
+            <div className="text-3xl font-extrabold text-white mt-0.5 flex items-center justify-center gap-1">
               <span>{userProfile.readiness_score}%</span>
               <Award className="w-6 h-6 text-amber-400" />
             </div>
@@ -236,7 +233,7 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
       </div>
 
       {/* Internal Navigation Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-800 pb-2">
+      <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-2">
         <button
           onClick={() => setActiveTab('jobs')}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
@@ -245,7 +242,7 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
               : 'text-slate-400 hover:text-white hover:bg-slate-800'
           }`}
         >
-          <Briefcase className="w-4 h-4" /> Top 5 Job Recommendations ({recommendations.length})
+          <Briefcase className="w-4 h-4" /> Top Recommended Opportunities ({recommendations.length})
         </button>
 
         <button
@@ -267,7 +264,7 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
               : 'text-slate-400 hover:text-white hover:bg-slate-800'
           }`}
         >
-          <Sparkles className="w-4 h-4" /> Career Taxonomy Fits ({careerPaths.length})
+          <Sparkles className="w-4 h-4" /> Career Fit Matrix ({careerPaths.length})
         </button>
 
         <button
@@ -286,7 +283,7 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
       {activeTab === 'jobs' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-white tracking-tight">TOP 5 RECOMMENDED OPPORTUNITIES</h2>
+            <h2 className="text-lg font-bold text-white tracking-tight">RECOMMENDED OPPORTUNITIES</h2>
             <span className="text-xs text-slate-400">Scored deterministically using 5-weight matching engine</span>
           </div>
 
@@ -319,9 +316,9 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
       {activeTab === 'careers' && (
         <CareerComparison
           careers={careerPaths}
-          onSelectCareerGoal={(title, gaps) => {
+          onSelectCareerGoal={(title) => {
             setUserProfile((prev) => ({ ...prev, career_goal: title }));
-            loadRoadmap(title, gaps);
+            loadRoadmap(title);
             setActiveTab('roadmap');
           }}
         />
@@ -332,11 +329,7 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
           careerGoal={userProfile.career_goal}
           userSkills={userProfile.skills}
           roadmap={roadmap}
-          onCompleteTask={(week) => {
-            setRoadmap((prev) =>
-              prev.map((item) => (item.week === week ? { ...item, status: 'completed' } : item))
-            );
-          }}
+          onCompleteTask={() => {}}
         />
       )}
 
@@ -345,7 +338,7 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({ userProfile, s
         <AssessmentQuizModal
           assessment={activeQuiz}
           onClose={() => setActiveQuiz(null)}
-          onSuccess={handleQuizSuccess}
+          onComplete={() => setActiveQuiz(null)}
         />
       )}
     </div>

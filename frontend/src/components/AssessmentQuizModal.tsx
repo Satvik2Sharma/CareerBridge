@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { Assessment, AssessmentResult } from '../types';
-import { X, CheckCircle2, Award, Zap, ArrowRight } from 'lucide-react';
-import { api } from '../services/api';
+import { X, Award, Zap, ArrowRight } from 'lucide-react';
+import { apiService } from '../services/api';
 
 interface QuizProps {
   assessment: Assessment;
   onClose: () => void;
-  onSuccess: (result: AssessmentResult) => void;
+  onSuccess?: (result: AssessmentResult) => void;
+  onComplete?: () => void;
 }
 
-export const AssessmentQuizModal: React.FC<QuizProps> = ({ assessment, onClose, onSuccess }) => {
+export const AssessmentQuizModal: React.FC<QuizProps> = ({ assessment, onClose, onSuccess, onComplete }) => {
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, number>>({});
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -21,9 +22,10 @@ export const AssessmentQuizModal: React.FC<QuizProps> = ({ assessment, onClose, 
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
-      const res = await api.submitAssessment(assessment.id, selectedAnswers);
+      const res = await apiService.submitAssessment(assessment.id, selectedAnswers);
       setResult(res);
-      onSuccess(res);
+      if (onSuccess) onSuccess(res);
+      if (onComplete) onComplete();
     } catch (e) {
       console.error(e);
     } finally {
@@ -33,7 +35,7 @@ export const AssessmentQuizModal: React.FC<QuizProps> = ({ assessment, onClose, 
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="glass-card max-w-xl w-full rounded-2xl border border-slate-700 p-6 space-y-6 max-h-[90vh] overflow-y-auto">
+      <div className="bg-slate-900 border border-slate-800 max-w-xl w-full rounded-2xl p-6 space-y-6 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between border-b border-slate-800 pb-4">
           <div>
             <span className="text-xs font-semibold uppercase tracking-wider text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
@@ -52,7 +54,7 @@ export const AssessmentQuizModal: React.FC<QuizProps> = ({ assessment, onClose, 
 
             <div className="space-y-6">
               {assessment.questions.map((q, idx) => (
-                <div key={q.id} className="space-y-3 bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                <div key={q.id} className="space-y-3 bg-slate-950/60 p-4 rounded-xl border border-slate-800">
                   <h4 className="text-sm font-semibold text-white">
                     {idx + 1}. {q.text}
                   </h4>
@@ -102,21 +104,21 @@ export const AssessmentQuizModal: React.FC<QuizProps> = ({ assessment, onClose, 
             </div>
 
             <div>
-              <h3 className="text-2xl font-extrabold text-white font-heading">
+              <h3 className="text-2xl font-extrabold text-white">
                 Assessment Passed! ({result.score_percentage}%)
               </h3>
               <p className="text-xs text-slate-300 mt-1">
-                You correctly answered {result.correct_count} of {result.total_questions} questions for {result.skill}.
+                You correctly answered {result.correct_count} of {result.total_questions} questions for {assessment.skill}.
               </p>
             </div>
 
             {/* Readiness Boost Display */}
-            <div className="bg-slate-900/90 p-4 rounded-xl border border-blue-500/30 grid grid-cols-2 gap-4">
+            <div className="bg-slate-950/90 p-4 rounded-xl border border-blue-500/30 grid grid-cols-2 gap-4">
               <div>
                 <span className="text-[11px] text-slate-400 uppercase font-semibold block">Readiness Boost</span>
                 <span className="text-xl font-extrabold text-emerald-400">+{result.readiness_boost}%</span>
                 <span className="block text-[11px] text-slate-300 mt-1">
-                  {result.previous_readiness}% → <strong className="text-white">{result.new_readiness_score}%</strong>
+                  New Readiness: <strong className="text-white">{result.new_readiness_score}%</strong>
                 </span>
               </div>
 

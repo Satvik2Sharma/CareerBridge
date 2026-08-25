@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { LearningRoadmapItem } from '../types';
-import { BookOpen, CheckCircle, Circle, Play, Award, ShieldCheck } from 'lucide-react';
+import { CheckCircle, ShieldCheck, ExternalLink } from 'lucide-react';
 
 interface RoadmapProps {
   careerGoal: string;
   userSkills: string[];
   roadmap: LearningRoadmapItem[];
-  onCompleteTask: (week: number) => void;
+  onCompleteTask?: (step: number) => void;
 }
 
 export const PersonalizedRoadmapView: React.FC<RoadmapProps> = ({
@@ -16,7 +16,7 @@ export const PersonalizedRoadmapView: React.FC<RoadmapProps> = ({
   onCompleteTask,
 }) => {
   return (
-    <div className="glass-card rounded-2xl p-6 border border-slate-800 space-y-6">
+    <div className="bg-slate-900/60 rounded-2xl p-6 border border-slate-800 space-y-6">
       <div>
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2.5 py-0.5 rounded-full">
@@ -34,13 +34,13 @@ export const PersonalizedRoadmapView: React.FC<RoadmapProps> = ({
         </p>
       </div>
 
-      {/* Week-by-Week Timeline */}
+      {/* Step-by-Step Timeline */}
       <div className="relative border-l-2 border-slate-800 ml-4 pl-6 space-y-8">
-        {roadmap.map((step) => {
-          const isCompleted = step.status === 'completed';
+        {roadmap.map((stepItem) => {
+          const isCompleted = stepItem.status === 'COMPLETED' || stepItem.status === 'completed';
 
           return (
-            <div key={step.week} className="relative group">
+            <div key={stepItem.step} className="relative group">
               {/* Timeline Marker */}
               <div
                 className={`absolute -left-[31px] top-0.5 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
@@ -49,51 +49,59 @@ export const PersonalizedRoadmapView: React.FC<RoadmapProps> = ({
                     : 'bg-slate-900 border-blue-500 text-blue-400'
                 }`}
               >
-                {isCompleted ? <CheckCircle className="w-3.5 h-3.5" /> : <span className="text-xs font-bold">{step.week}</span>}
+                {isCompleted ? <CheckCircle className="w-3.5 h-3.5" /> : <span className="text-xs font-bold">{stepItem.step}</span>}
               </div>
 
-              <div className="glass-card rounded-xl p-5 border border-slate-800/80 hover:border-slate-700 transition">
+              <div className="bg-slate-900/80 rounded-xl p-5 border border-slate-800 hover:border-slate-700 transition">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
                   <div>
                     <span className="text-[11px] font-bold uppercase text-blue-400 tracking-wider">
-                      WEEK {step.week} • {step.skill}
+                      STEP {stepItem.step} • {stepItem.priority} PRIORITY
                     </span>
-                    <h3 className="font-heading font-bold text-base text-white">{step.title}</h3>
+                    <h3 className="font-bold text-base text-white">{stepItem.skill}</h3>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <span className="text-[11px] font-semibold text-slate-400 bg-slate-800 px-2.5 py-1 rounded-md">
-                      ⏱ {step.duration}
+                      ⏱ ~{stepItem.estimated_weeks || 2} weeks
                     </span>
-                    <button
-                      onClick={() => onCompleteTask(step.week)}
-                      className={`px-3 py-1.5 rounded-lg font-semibold text-xs transition flex items-center gap-1 ${
-                        isCompleted
-                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                          : 'bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/20'
-                      }`}
-                    >
-                      {isCompleted ? (
-                        <>
-                          <CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> Completed
-                        </>
-                      ) : (
-                        'Mark Completed'
-                      )}
-                    </button>
+                    {onCompleteTask && (
+                      <button
+                        onClick={() => onCompleteTask(stepItem.step)}
+                        className={`px-3 py-1.5 rounded-lg font-semibold text-xs transition flex items-center gap-1 ${
+                          isCompleted
+                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                            : 'bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/20'
+                        }`}
+                      >
+                        {isCompleted ? (
+                          <>
+                            <CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> Completed
+                          </>
+                        ) : (
+                          'Mark Completed'
+                        )}
+                      </button>
+                    )}
                   </div>
                 </div>
 
-                <p className="text-xs text-slate-300 mt-2 leading-relaxed">{step.objective}</p>
-
-                {/* Practical Task Card */}
-                <div className="mt-3 bg-slate-900/90 p-3 rounded-xl border border-slate-800/80 flex items-start gap-2.5">
-                  <Play className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-[11px] font-bold text-amber-300 uppercase">Practical Milestone Task</span>
-                    <p className="text-xs text-slate-300 mt-0.5">{step.practical_task}</p>
+                {/* Learning Resources */}
+                {stepItem.resources && stepItem.resources.length > 0 && (
+                  <div className="mt-3 space-y-2">
+                    {stepItem.resources.map((r) => (
+                      <div key={r.id} className="p-3 bg-slate-950/80 rounded-lg border border-slate-800 flex items-center justify-between gap-2 text-xs">
+                        <div>
+                          <span className="font-semibold text-slate-200 block">{r.title}</span>
+                          <span className="text-slate-400 text-[11px]">{r.provider} • {r.duration}</span>
+                        </div>
+                        <a href={r.url} target="_blank" rel="noreferrer" className="text-blue-400 hover:underline flex items-center gap-1">
+                          Resource <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </div>
+                    ))}
                   </div>
-                </div>
+                )}
               </div>
             </div>
           );
