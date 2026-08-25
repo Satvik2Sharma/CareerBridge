@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, String, Text, DateTime, ForeignKey, Integer, JSON
+from sqlalchemy import Column, String, Text, DateTime, ForeignKey, Integer, Float, JSON
 from sqlalchemy.orm import relationship
 from pgvector.sqlalchemy import Vector
 from app.database import Base
@@ -47,3 +47,16 @@ class AssessmentQuestion(Base):
     correct_index = Column(Integer, nullable=False)
 
     assessment = relationship("Assessment", back_populates="questions")
+
+class UserAssessmentResult(Base):
+    __tablename__ = "user_assessment_results"
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), nullable=False, index=True)
+    assessment_id = Column(String(36), ForeignKey("assessments.id"), nullable=False)
+    score_percentage = Column(Float, nullable=False)
+    correct_count = Column(Integer, nullable=False)
+    total_questions = Column(Integer, nullable=False)
+    passed = Column(String(20), default="true")
+    readiness_boost = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)

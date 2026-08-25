@@ -5,7 +5,7 @@ from sqlalchemy.orm import selectinload
 from typing import List, Dict, Any
 
 from app.database import get_db
-from app.models.learning import Assessment as AssessmentModel
+from app.models.learning import Assessment as AssessmentModel, UserAssessmentResult
 from app.schemas.careerbridge import (
     AssessmentSchema,
     QuestionSchema,
@@ -22,7 +22,7 @@ async def list_assessments(db: AsyncSession = Depends(get_db)):
     res = await db.execute(stmt)
     ass_list = res.scalars().all()
     if not ass_list:
-        return {"assessments": seed_loader.load_assessments()}
+        return {"assessments": []}
 
     out = []
     for a in ass_list:
@@ -53,8 +53,26 @@ async def submit_assessment(
     req: AssessmentSubmitRequest,
     db: AsyncSession = Depends(get_db)
 ):
-    assessments = seed_loader.load_assessments()
-    target_quiz = next((a for a in assessments if a["id"] == assessment_id), None)
+    stmt = select(AssessmentModel).where(AssessmentModel.id == assessment_id).options(selectinload(AssessmentModel.questions))
+    res = await db.execute(stmt)
+    quiz_obj = res.scalars().first()
+
+    target_quiz = None
+    if quiz_obj:
+        target_quiz = {
+            "id": quiz_obj.id,
+            "readiness_boost": quiz_obj.readiness_boost,
+            "questions": [
+                {"id": q.id, "correct_index": q.correct_index}
+                for q in quiz_obj.questions
+            ]
+        }
+    else:
+        seed_quizzes = seed_loader.load_assessments()
+        fallback = next((a for a in seed_quizzes if a["id"] == assessment_id), None)
+        if fallback:
+            target_quiz = fallback
+
     if not target_quiz:
         raise HTTPException(status_code=404, detail=f"Assessment '{assessment_id}' not found.")
 
@@ -63,13 +81,29 @@ async def submit_assessment(
     total_questions = len(target_quiz["questions"])
 
     for q in target_quiz["questions"]:
-        q_id = q["id"]
+        q_id = str(q["id"])
         if q_id in user_answers and user_answers[q_id] == q["correct_index"]:
             correct_count += 1
 
     percentage = (correct_count / total_questions * 100.0) if total_questions > 0 else 0.0
     passed = percentage >= 60.0
     boost = target_quiz.get("readiness_boost", 5) if passed else 0
+
+    # Persist attempt to database
+    try:
+        user_result = UserAssessmentResult(
+            user_id="usr-1",
+            assessment_id=assessment_id,
+            score_percentage=round(percentage, 1),
+            correct_count=correct_count,
+            total_questions=total_questions,
+            passed="true" if passed else "false",
+            readiness_boost=boost
+        )
+        db.add(user_result)
+        await db.commit()
+    except Exception as e:
+        print(f"[Assessment Result Persistence Notice] {e}")
 
     return AssessmentSubmitResponse(
         passed=passed,

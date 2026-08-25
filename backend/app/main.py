@@ -2,13 +2,12 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
-from app.database import async_engine, Base, AsyncSessionLocal
-from app.services.ingestion.pipeline import ingestion_pipeline
+from app.database import async_engine, Base
 
 # Include version 1 API routers
 from app.routers.v1 import api_v1_router
 
-# Legacy Routers for 100% Frontend Backward-Compatibility
+# Legacy Routers for Frontend Backward-Compatibility
 from app.routers import (
     health,
     skills,
@@ -26,13 +25,6 @@ async def lifespan(app: FastAPI):
     # Initialize DB Tables on startup
     async with async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-
-    # Ingest Seed & Source Data
-    async with AsyncSessionLocal() as session:
-        try:
-            await ingestion_pipeline.ingest_all(session)
-        except Exception as e:
-            print(f"[Lifespan Ingestion Notice] {e}")
 
     yield
 

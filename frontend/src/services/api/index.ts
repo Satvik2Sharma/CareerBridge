@@ -102,7 +102,7 @@ export const apiService = {
     try {
       return await request<{ jobs: Job[] }>('/jobs');
     } catch {
-      return { jobs: mockJobs };
+      return { jobs: [] };
     }
   },
 
@@ -115,7 +115,7 @@ export const apiService = {
     try {
       return await request<Job>(`/jobs/${id}`);
     } catch {
-      return mockJobs.find((item) => item.id === id) || mockJobs[0];
+      throw new Error(`Job ${id} not found`);
     }
   },
 
@@ -149,27 +149,7 @@ export const apiService = {
         body: JSON.stringify(profile)
       });
     } catch {
-      const recs: JobRecommendation[] = mockJobs.map((j, idx) => ({
-        job_id: j.id,
-        job_title: j.title,
-        company: j.company,
-        overall_match: 92 - idx * 5,
-        breakdown: {
-          required_skill_match: 95,
-          proficiency_match: 90,
-          career_goal_alignment: 90,
-          experience_match: 90,
-          education_compatibility: 100,
-          location_preference: 90,
-          profile_evidence: 85
-        },
-        matched_skills: j.required_skills.filter((s) => profile.skills.includes(s)),
-        matched_preferred_skills: j.preferred_skills.filter((s) => profile.skills.includes(s)),
-        missing_skills: j.required_skills.filter((s) => !profile.skills.includes(s)),
-        explanation: `Strong ${92 - idx * 5}% match! Profile shows skill alignment for ${j.title}.`,
-        job_details: j
-      }));
-      return { top_recommendations: recs };
+      return { top_recommendations: [] };
     }
   },
 
@@ -179,7 +159,7 @@ export const apiService = {
     try {
       return await request<{ recruitments: GovernmentRecruitment[] }>('/government/recruitments');
     } catch {
-      return { recruitments: mockGovernmentRecruitments };
+      return { recruitments: [] };
     }
   },
 
@@ -239,7 +219,7 @@ export const apiService = {
     try {
       return await request<{ careers: Career[] }>('/careers');
     } catch {
-      return { careers: mockCareers };
+      return { careers: [] };
     }
   },
 
@@ -251,7 +231,7 @@ export const apiService = {
         body: JSON.stringify(profile)
       });
     } catch {
-      return { career_recommendations: mockCareerRecommendations };
+      return { career_recommendations: [] };
     }
   },
 
@@ -299,7 +279,7 @@ export const apiService = {
         body: JSON.stringify({ user_profile: profile, career_goal: careerGoal })
       });
     } catch {
-      return { roadmap: mockRoadmap };
+      return { roadmap: [] };
     }
   },
 
@@ -309,7 +289,7 @@ export const apiService = {
     try {
       return await request<{ assessments: Assessment[] }>('/assessments');
     } catch {
-      return { assessments: mockAssessments };
+      return { assessments: [] };
     }
   },
 

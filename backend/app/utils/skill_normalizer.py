@@ -14,7 +14,6 @@ class SkillNormalizer:
 
     def load_skills(self, data_path: str):
         if not os.path.exists(data_path):
-            # Fallback path if run from backend folder
             data_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data", "skills.json"))
 
         if os.path.exists(data_path):
@@ -24,25 +23,24 @@ class SkillNormalizer:
                     for item in data.get("skills", []):
                         canonical = item["name"]
                         self.canonical_skills[canonical] = item
-                        # Map canonical itself (lowercase)
                         self.alias_map[canonical.lower()] = canonical
-                        # Map aliases
                         for alias in item.get("aliases", []):
                             self.alias_map[alias.lower().strip()] = canonical
             except Exception as e:
                 print(f"Error loading skills dataset: {e}")
+
+    def get_all_skills(self) -> List[dict]:
+        return list(self.canonical_skills.values())
 
     def normalize(self, raw_skill: str) -> str:
         clean = raw_skill.strip().lower()
         if clean in self.alias_map:
             return self.alias_map[clean]
         
-        # Check partial matching if exact alias missing
         for alias, canonical in self.alias_map.items():
             if len(alias) > 3 and alias in clean:
                 return canonical
         
-        # Capitalize raw as fallback
         return raw_skill.strip().title()
 
     def normalize_list(self, raw_skills: List[str]) -> List[str]:

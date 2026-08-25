@@ -21,9 +21,9 @@ export const JobDiscoveryPage: React.FC = () => {
       setLoading(true);
       try {
         const res = await apiService.getJobRecommendations(mockDemoUser);
-        setRecommendations(res.top_recommendations);
+        setRecommendations(res.top_recommendations || []);
       } catch {
-        // Fallback handled in apiService
+        setRecommendations([]);
       } finally {
         setLoading(false);
       }
@@ -36,7 +36,7 @@ export const JobDiscoveryPage: React.FC = () => {
       r.job_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       r.company.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesWorkType =
-      selectedWorkType === 'ALL' || r.job_details.work_type.toUpperCase() === selectedWorkType;
+      selectedWorkType === 'ALL' || r.job_details?.work_type?.toUpperCase() === selectedWorkType;
     return matchesSearch && matchesWorkType;
   });
 
@@ -48,48 +48,47 @@ export const JobDiscoveryPage: React.FC = () => {
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <div className="flex-1">
+      <Card className="p-4 flex flex-col md:flex-row items-center gap-4">
+        <div className="flex-1 w-full">
           <Input
-            placeholder="Search by job title, company, or skill..."
+            placeholder="Search job title, skills, or company..."
+            leftIcon={<Search className="w-4 h-4 text-slate-400" />}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            leftIcon={<Search className="w-4 h-4" />}
           />
         </div>
-        <div className="flex items-center gap-2">
-          {['ALL', 'HYBRID', 'REMOTE', 'ONSITE'].map((type) => (
-            <button
-              key={type}
-              onClick={() => setSelectedWorkType(type)}
-              className={`px-3 py-2 text-xs font-medium rounded-lg border transition-all ${
-                selectedWorkType === type
-                  ? 'bg-blue-600 border-blue-500 text-white shadow-sm'
-                  : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              {type}
-            </button>
-          ))}
+        <div className="flex items-center gap-2 w-full md:w-auto">
+          <Filter className="w-4 h-4 text-slate-400" />
+          <select
+            className="bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={selectedWorkType}
+            onChange={(e) => setSelectedWorkType(e.target.value)}
+          >
+            <option value="ALL">All Work Types</option>
+            <option value="REMOTE">Remote</option>
+            <option value="HYBRID">Hybrid</option>
+            <option value="ON-SITE">On-site</option>
+          </select>
         </div>
-      </div>
+      </Card>
 
-      {/* Job Listing Cards */}
+      {/* Job Listings List */}
       {loading ? (
         <div className="space-y-4">
+          <Skeleton variant="rectangular" className="h-32" />
           <Skeleton variant="rectangular" className="h-32" />
           <Skeleton variant="rectangular" className="h-32" />
         </div>
       ) : filtered.length === 0 ? (
         <Card className="text-center py-12">
           <Briefcase className="w-10 h-10 text-slate-400 mx-auto mb-3" />
-          <h3 className="text-base font-semibold text-slate-200">No matching jobs found</h3>
-          <p className="text-xs text-slate-400 mt-1">Try adjusting your search criteria or work location preferences.</p>
+          <h3 className="text-base font-semibold text-slate-200">No opportunities available.</h3>
+          <p className="text-xs text-slate-400 mt-1">Complete your profile or upload your resume to generate personalized job recommendations.</p>
         </Card>
       ) : (
         <div className="space-y-4">
           {filtered.map((rec) => {
-            const j = rec.job_details;
+            const j = rec.job_details || {};
             return (
               <Card key={rec.job_id} hoverEffect className="p-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -104,10 +103,10 @@ export const JobDiscoveryPage: React.FC = () => {
                         <Building2 className="w-3.5 h-3.5 text-blue-400" /> {rec.company}
                       </span>
                       <span className="flex items-center gap-1">
-                        <MapPin className="w-3.5 h-3.5 text-slate-500" /> {j.location} ({j.work_type})
+                        <MapPin className="w-3.5 h-3.5 text-slate-500" /> {j.location || 'Remote'} ({j.work_type || 'Hybrid'})
                       </span>
                       <span className="flex items-center gap-1 text-emerald-400 font-medium">
-                        <DollarSign className="w-3.5 h-3.5" /> {j.salary_range}
+                        <DollarSign className="w-3.5 h-3.5" /> {j.salary_range || 'Competitive'}
                       </span>
                     </div>
 

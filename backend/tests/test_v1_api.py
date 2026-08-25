@@ -15,7 +15,7 @@ def test_v1_skills_endpoint():
         assert res.status_code == 200
         data = res.json()
         assert "skills" in data
-        assert len(data["skills"]) > 0
+        assert isinstance(data["skills"], list)
 
 def test_v1_jobs_endpoint():
     with TestClient(app) as client:
@@ -23,7 +23,7 @@ def test_v1_jobs_endpoint():
         assert res.status_code == 200
         data = res.json()
         assert "jobs" in data
-        assert len(data["jobs"]) > 0
+        assert isinstance(data["jobs"], list)
 
 def test_v1_government_recruitments():
     with TestClient(app) as client:
@@ -31,6 +31,7 @@ def test_v1_government_recruitments():
         assert res.status_code == 200
         data = res.json()
         assert "recruitments" in data
+        assert isinstance(data["recruitments"], list)
 
 def test_v1_auth_flow():
     with TestClient(app) as client:
@@ -73,7 +74,7 @@ def test_v1_job_recommendation():
         assert res.status_code == 200
         data = res.json()
         assert "top_recommendations" in data
-        assert len(data["top_recommendations"]) > 0
+        assert isinstance(data["top_recommendations"], list)
 
 def test_v1_msme_assessment():
     with TestClient(app) as client:

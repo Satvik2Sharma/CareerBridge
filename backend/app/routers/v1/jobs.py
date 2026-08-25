@@ -8,7 +8,6 @@ from app.database import get_db
 from app.models.opportunity import Opportunity, OpportunitySkill
 from app.schemas.careerbridge import UserProfileSchema, JobRecommendationResponse, JobSchema
 from app.services.matching.scoring_engine import JobMatchingEngine
-from app.seed.loader import seed_loader
 
 router = APIRouter(prefix="/api/v1/jobs", tags=["Jobs & Opportunities"])
 matching_engine = JobMatchingEngine()
@@ -19,7 +18,7 @@ async def list_jobs(db: AsyncSession = Depends(get_db)):
     res = await db.execute(stmt)
     opps = res.scalars().all()
     if not opps:
-        return {"jobs": seed_loader.load_jobs()}
+        return {"jobs": []}
 
     jobs = [
         JobSchema(
@@ -50,9 +49,6 @@ async def get_job_by_id(job_id: str, db: AsyncSession = Depends(get_db)):
     res = await db.execute(stmt)
     o = res.scalars().first()
     if not o:
-        for seed_j in seed_loader.load_jobs():
-            if seed_j["id"] == job_id:
-                return JobSchema(**seed_j)
         raise HTTPException(status_code=404, detail=f"Job opportunity '{job_id}' not found.")
 
     return JobSchema(
@@ -80,25 +76,25 @@ async def get_job_recommendations(profile: UserProfileSchema, db: AsyncSession =
     res = await db.execute(stmt)
     opps = res.scalars().all()
     
+    if not opps:
+        return {"top_recommendations": []}
+
     jobs_list = []
-    if opps:
-        for o in opps:
-            jobs_list.append({
-                "id": o.id,
-                "title": o.title,
-                "company": o.company_name,
-                "location": o.location or "Remote",
-                "work_type": o.work_type or "Hybrid",
-                "experience_level": o.experience_level or "0-2 years",
-                "category": o.category,
-                "salary_range": o.salary_range or "Competitive",
-                "career_id": o.career_id or "car-1",
-                "required_skills": [s.skill.name for s in o.skills if s.is_required == "true"] or ["Java", "SQL", "REST APIs", "Git"],
-                "preferred_skills": [s.skill.name for s in o.skills if s.is_required == "false"] or ["Spring Boot", "Docker"],
-                "description": o.description or ""
-            })
-    else:
-        jobs_list = seed_loader.load_jobs()
+    for o in opps:
+        jobs_list.append({
+            "id": o.id,
+            "title": o.title,
+            "company": o.company_name,
+            "location": o.location or "Remote",
+            "work_type": o.work_type or "Hybrid",
+            "experience_level": o.experience_level or "0-2 years",
+            "category": o.category,
+            "salary_range": o.salary_range or "Competitive",
+            "career_id": o.career_id or "car-1",
+            "required_skills": [s.skill.name for s in o.skills if s.is_required == "true"],
+            "preferred_skills": [s.skill.name for s in o.skills if s.is_required == "false"],
+            "description": o.description or ""
+        })
 
     recommendations = []
     for j in jobs_list:
@@ -107,7 +103,7 @@ async def get_job_recommendations(profile: UserProfileSchema, db: AsyncSession =
         matched_skills = match_result["matched_skills"]
         missing_skills = match_result["missing_skills"]
         
-        explanation = f"Matched {len(matched_skills)} key skills ({', '.join(matched_skills[:3])}). Alignment with {j['title']} goal."
+        explanation = f"Matched {len(matched_skills)} key skills ({', '.join(matched_skills[:3]) if matched_skills else 'None'}). Alignment with {j['title']} goal."
         
         rec = JobRecommendationResponse(
             job_id=j["id"],
