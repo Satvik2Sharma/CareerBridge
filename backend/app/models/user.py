@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, String, Float, DateTime, ForeignKey, Text, JSON
+from sqlalchemy import Column, String, Float, DateTime, ForeignKey, Text, JSON, Integer
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -29,6 +29,7 @@ class UserProfile(Base):
     user_id = Column(String(36), ForeignKey("users.id"), unique=True, nullable=False)
     name = Column(String(255), nullable=False)
     email = Column(String(255), nullable=False)
+    phone = Column(String(50), nullable=True)
     career_goal = Column(String(255), nullable=True)
     experience_years = Column(Float, default=0.0)
     education = Column(String(255), nullable=True)
@@ -41,6 +42,17 @@ class UserProfile(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = relationship("User", back_populates="profile")
+
+class UserSkill(Base):
+    __tablename__ = "user_skills"
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), ForeignKey("users.id"), nullable=False)
+    skill_name = Column(String(255), nullable=False, index=True)
+    proficiency = Column(Integer, default=3)
+    verified = Column(String(10), default="true")
+    source = Column(String(100), default="User Entry")
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 class Resume(Base):
     __tablename__ = "resumes"

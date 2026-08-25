@@ -38,6 +38,30 @@ export const apiService = {
     return request<{ status: string }>('/health');
   },
 
+  // User Profile CRUD
+  async getUserProfile(): Promise<UserProfile> {
+    if (env.USE_MOCK_API) return mockDemoUser;
+    try {
+      return await request<UserProfile>('/profile');
+    } catch {
+      return mockDemoUser;
+    }
+  },
+
+  async updateUserProfile(profile: UserProfile): Promise<UserProfile> {
+    // Update local memory reference
+    Object.assign(mockDemoUser, profile);
+    if (env.USE_MOCK_API) return mockDemoUser;
+    try {
+      return await request<UserProfile>('/profile', {
+        method: 'PUT',
+        body: JSON.stringify(profile)
+      });
+    } catch {
+      return mockDemoUser;
+    }
+  },
+
   // 2. Jobs
   async getJobs(): Promise<{ jobs: Job[] }> {
     if (env.USE_MOCK_API) return { jobs: mockJobs };
