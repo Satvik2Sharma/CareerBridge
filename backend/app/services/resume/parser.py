@@ -31,3 +31,6 @@ class ResumeParser:
         return parsed_data
 
 resume_parser = ResumeParser()
+
+def parse_resume_pdf(file_bytes: bytes, filename: str = "") -> Dict[str, Any]:
+    return resume_parser.parse_resume(file_bytes=file_bytes)

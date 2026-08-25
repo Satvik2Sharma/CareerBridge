@@ -1,6 +1,14 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
+from app.database import async_engine, Base, AsyncSessionLocal
+from app.services.ingestion.pipeline import ingestion_pipeline
+
+# Include version 1 API routers
+from app.routers.v1 import api_v1_router
+
+# Legacy Routers for 100% Frontend Backward-Compatibility
 from app.routers import (
     health,
     skills,
@@ -13,10 +21,26 @@ from app.routers import (
     business
 )
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Initialize DB Tables on startup
+    async with async_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+    # Ingest Seed & Source Data
+    async with AsyncSessionLocal() as session:
+        try:
+            await ingestion_pipeline.ingest_all(session)
+        except Exception as e:
+            print(f"[Lifespan Ingestion Notice] {e}")
+
+    yield
+
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.VERSION,
-    description="CareerBridge — AI-Powered Career & MSME Opportunity Intelligence Platform"
+    description="CareerBridge — AI-Powered Career & MSME Opportunity Intelligence Platform",
+    lifespan=lifespan
 )
 
 # CORS configuration
@@ -28,7 +52,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include Routers
+# Versioned API Routes (/api/v1)
+app.include_router(api_v1_router)
+
+# Legacy API Routes (/api) for Frontend Compatibility
 app.include_router(health.router)
 app.include_router(skills.router)
 app.include_router(jobs.router)
@@ -42,9 +69,11 @@ app.include_router(business.router)
 @app.get("/")
 def root():
     return {
-        "message": "Welcome to CareerBridge API",
+        "message": "Welcome to CareerBridge Production API",
+        "version": settings.VERSION,
         "docs_url": "/docs",
-        "health_check": "/api/health"
+        "api_v1_health": "/api/v1/health",
+        "legacy_health": "/api/health"
     }
 
 if __name__ == "__main__":

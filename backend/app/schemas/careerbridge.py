@@ -1,5 +1,24 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
 from typing import List, Dict, Any, Optional
+
+# Auth Schemas
+class AuthRegisterRequest(BaseModel):
+    email: str
+    password: str
+    full_name: str
+    role: str = "candidate" # candidate, msme_owner
+
+class AuthLoginRequest(BaseModel):
+    email: str
+    password: str
+
+class AuthTokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user_id: str
+    email: str
+    full_name: str
+    role: str
 
 # Skill Schemas
 class SkillSchema(BaseModel):
@@ -32,10 +51,14 @@ class JobSchema(BaseModel):
     experience_level: str
     category: str
     salary_range: str
-    career_id: str
-    required_skills: List[str]
-    preferred_skills: List[str]
+    career_id: Optional[str] = None
+    required_skills: List[str] = []
+    preferred_skills: List[str] = []
     description: str
+    type: str = "PRIVATE_JOB" # PRIVATE_JOB, GOVERNMENT_JOB, INTERNSHIP, APPRENTICESHIP, GIG
+    source: str = "CareerBridge Seed"
+    source_url: Optional[str] = None
+    verification_status: str = "VERIFIED"
 
 class MatchBreakdownSchema(BaseModel):
     required_skill_match: float
@@ -57,6 +80,50 @@ class JobRecommendationResponse(BaseModel):
     missing_skills: List[str]
     explanation: Optional[str] = None
     job_details: Optional[JobSchema] = None
+
+# Government Recruitment & Eligibility Schemas
+class GovernmentPostSchema(BaseModel):
+    id: str
+    recruitment_id: str
+    post_name: str
+    department: Optional[str] = None
+    pay_level: Optional[str] = None
+    vacancies: int = 1
+    education_required: Optional[str] = None
+    degree: Optional[str] = None
+    branch: Optional[str] = None
+    age_min: int = 18
+    age_max: int = 30
+    experience_years_required: int = 0
+
+class GovernmentRecruitmentSchema(BaseModel):
+    id: str
+    recruiting_body: str # UPSC, SSC, IBPS, RRB
+    recruitment_name: str
+    notification_number: Optional[str] = None
+    notification_url: Optional[str] = None
+    official_apply_url: Optional[str] = None
+    application_deadline: Optional[str] = None
+    total_vacancies: int = 0
+    selection_process: Optional[str] = None
+    status: str = "ACTIVE"
+    posts: List[GovernmentPostSchema] = []
+
+class GovernmentEligibilityRequest(BaseModel):
+    age: int = 22
+    category: str = "GENERAL" # GENERAL, OBC, SC, ST, EWS, PWD
+    degree: str = "B.Tech"
+    branch: str = "Computer Science"
+    experience_years: float = 0.5
+    gender: Optional[str] = "All"
+
+class GovernmentEligibilityResponse(BaseModel):
+    status: str # ELIGIBLE, POSSIBLY_ELIGIBLE, NOT_ELIGIBLE
+    recruitment_id: str
+    post_name: str
+    recruiting_body: str
+    reasons: List[str]
+    official_notification_url: Optional[str] = None
 
 # Skill Gap Schemas
 class SkillStateSchema(BaseModel):

@@ -3,6 +3,9 @@ from app.services.matching.scoring_engine import JobMatchingEngine
 from app.services.skill_gap.gap_analyzer import SkillGapEngine
 from app.services.careers.career_engine import CareerMatchingEngine
 from app.services.business.msme_engine import MSMEEngine
+from app.services.government.eligibility_engine import GovernmentEligibilityEngine
+from app.schemas.careerbridge import GovernmentEligibilityRequest
+from app.services.embedding.mock_provider import MockEmbeddingProvider
 from app.utils.skill_normalizer import skill_normalizer
 
 def test_skill_normalization():
@@ -75,3 +78,36 @@ def test_msme_digital_maturity():
     assert res["category_scores"]["Payments"] == 30
     assert len(res["recommendations"]) > 0
     assert len(res["roadmap_90_day"]) == 3
+
+def test_government_eligibility_engine():
+    engine = GovernmentEligibilityEngine()
+    candidate = GovernmentEligibilityRequest(
+        age=24,
+        category="OBC",
+        degree="B.Tech",
+        branch="Computer Science",
+        experience_years=1.0
+    )
+    post_details = {
+        "post_name": "Assistant Section Officer (IT)",
+        "degree": "B.Tech",
+        "age_min": 18,
+        "age_max": 30,
+        "experience_years_required": 0
+    }
+    recruitment_details = {
+        "id": "rec-meity",
+        "recruiting_body": "MeitY",
+        "notification_url": "https://meity.gov.in"
+    }
+    res = engine.evaluate_eligibility(candidate, post_details, recruitment_details)
+    assert res.status == "ELIGIBLE"
+    assert len(res.reasons) > 0
+
+@pytest.mark.asyncio
+async def test_mock_embedding_provider():
+    provider = MockEmbeddingProvider(dimensions=1536)
+    vec1 = await provider.get_embedding("Python Developer Backend")
+    vec2 = await provider.get_embedding("Python Developer Backend")
+    assert len(vec1) == 1536
+    assert vec1 == vec2 # Deterministic check
