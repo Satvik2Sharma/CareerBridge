@@ -25,4 +25,25 @@ class SeedDataLoader:
                 print(f"Error reading seed file {path}: {e}")
         return {}
 
+    def load_jobs(self) -> List[Dict[str, Any]]:
+        return self.jobs_data
+
+    def load_skills(self) -> List[Dict[str, Any]]:
+        return self.skills_data
+
+    def load_careers(self) -> List[Dict[str, Any]]:
+        return self.careers_data
+
+    def load_learning_resources(self) -> List[Dict[str, Any]]:
+        return self.resources_data
+
+    def load_assessments(self) -> List[Dict[str, Any]]:
+        return self.assessments_data
+
+    def load_business_recommendations(self) -> Dict[str, Any]:
+        return {
+            "msme_presets": self.msme_presets,
+            "recommendations_catalog": self.msme_recommendations
+        }
+
 seed_loader = SeedDataLoader()
