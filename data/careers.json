@@ -1,0 +1,100 @@
+{
+  "careers": [
+    {
+      "id": "car-1",
+      "title": "Full Stack Developer",
+      "category": "Software Development",
+      "description": "Builds both client-facing frontend interfaces and server-side backend logic, database integrations, and web infrastructure.",
+      "required_skills": ["JavaScript", "React", "Node.js", "REST APIs", "SQL", "Git"],
+      "preferred_skills": ["TypeScript", "Docker", "Next.js", "Tailwind CSS", "PostgreSQL"],
+      "education_expectations": "B.Tech/B.E./B.Sc in Computer Science, IT, or equivalent bootcamps",
+      "typical_experience": "0-3 years",
+      "prep_effort_months": "3-5 months",
+      "opportunity_demand": "High"
+    },
+    {
+      "id": "car-2",
+      "title": "Backend Developer",
+      "category": "Software Development",
+      "description": "Architects server logic, REST/GraphQL APIs, microservices, database schemas, and cloud deployment pipelines.",
+      "required_skills": ["Java", "Python", "SQL", "REST APIs", "Git"],
+      "preferred_skills": ["Spring Boot", "FastAPI", "Docker", "PostgreSQL", "Redis", "CI/CD"],
+      "education_expectations": "B.Tech/B.E. in CS, IT, Software Engineering",
+      "typical_experience": "0-3 years",
+      "prep_effort_months": "2-4 months",
+      "opportunity_demand": "High"
+    },
+    {
+      "id": "car-3",
+      "title": "Frontend Developer",
+      "category": "Software Development",
+      "description": "Designs and builds accessible, high-performance visual user interfaces and single page web applications.",
+      "required_skills": ["JavaScript", "HTML5 & CSS3", "React", "Git"],
+      "preferred_skills": ["TypeScript", "Tailwind CSS", "Next.js", "Figma", "REST APIs"],
+      "education_expectations": "B.Tech, BCA, B.Sc CS, or Design background",
+      "typical_experience": "0-2 years",
+      "prep_effort_months": "2-3 months",
+      "opportunity_demand": "High"
+    },
+    {
+      "id": "car-4",
+      "title": "Data Analyst",
+      "category": "Data & AI",
+      "description": "Transforms complex relational datasets into actionable business insights, visual dashboards, and strategic reports.",
+      "required_skills": ["Python", "SQL", "Excel", "Statistics", "Pandas"],
+      "preferred_skills": ["Data Visualization", "Tableau", "Power BI", "NumPy"],
+      "education_expectations": "Degree in CS, Statistics, Mathematics, Economics, or Business",
+      "typical_experience": "0-2 years",
+      "prep_effort_months": "2-4 months",
+      "opportunity_demand": "High"
+    },
+    {
+      "id": "car-5",
+      "title": "Machine Learning Engineer",
+      "category": "Data & AI",
+      "description": "Designs, trains, evaluates, and deploys predictive machine learning models and AI pipelines into production systems.",
+      "required_skills": ["Python", "Machine Learning", "Statistics", "Pandas", "NumPy", "Git"],
+      "preferred_skills": ["Deep Learning", "FastAPI", "Docker", "SQL", "AWS"],
+      "education_expectations": "B.Tech/M.Tech in CS, Data Science, AI, or Math",
+      "typical_experience": "1-3 years",
+      "prep_effort_months": "4-6 months",
+      "opportunity_demand": "High"
+    },
+    {
+      "id": "car-6",
+      "title": "DevOps Engineer",
+      "category": "DevOps & Cloud",
+      "description": "Automates software delivery, manages cloud infrastructure, container orchestration, and CI/CD pipelines.",
+      "required_skills": ["Git", "Docker", "CI/CD", "AWS", "Python"],
+      "preferred_skills": ["Kubernetes", "PostgreSQL", "REST APIs"],
+      "education_expectations": "B.Tech in CS/IT or Systems Engineering background",
+      "typical_experience": "1-3 years",
+      "prep_effort_months": "3-5 months",
+      "opportunity_demand": "High"
+    },
+    {
+      "id": "car-7",
+      "title": "UI/UX Designer",
+      "category": "Design",
+      "description": "Conducts user research, crafts wireframes, designs polished user interfaces, and prototypes interactive digital experiences.",
+      "required_skills": ["Figma", "Wireframing & Prototyping", "HTML5 & CSS3"],
+      "preferred_skills": ["React", "JavaScript", "Tailwind CSS"],
+      "education_expectations": "Degree in Design, Fine Arts, HCI, or CS",
+      "typical_experience": "0-2 years",
+      "prep_effort_months": "2-4 months",
+      "opportunity_demand": "Medium-High"
+    },
+    {
+      "id": "car-8",
+      "title": "Digital Marketing Specialist",
+      "category": "Business & Growth",
+      "description": "Executes multi-channel marketing campaigns, search engine optimization (SEO), social media marketing, and growth analytics.",
+      "required_skills": ["Digital Marketing", "SEO", "Social Media Marketing"],
+      "preferred_skills": ["Excel", "Data Visualization", "Figma"],
+      "education_expectations": "Degree in Business, Marketing, Communications, or Humanities",
+      "typical_experience": "0-2 years",
+      "prep_effort_months": "1-3 months",
+      "opportunity_demand": "High"
+    }
+  ]
+}

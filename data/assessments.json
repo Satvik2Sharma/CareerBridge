@@ -1,0 +1,79 @@
+{
+  "assessments": [
+    {
+      "id": "quiz-spring-boot",
+      "skill": "Spring Boot",
+      "title": "Spring Boot Microservices & Enterprise Quiz",
+      "description": "Test your knowledge of Spring annotations, Dependency Injection, REST Controllers, and Data JPA.",
+      "readiness_boost": 5,
+      "questions": [
+        {
+          "id": "q1",
+          "text": "Which Spring annotation is used to mark a class as a RESTful web controller?",
+          "options": ["@Controller", "@RestController", "@Service", "@Component"],
+          "correct_index": 1
+        },
+        {
+          "id": "q2",
+          "text": "What is the primary default embedded servlet container in Spring Boot web applications?",
+          "options": ["Tomcat", "Jetty", "Undertow", "GlassFish"],
+          "correct_index": 0
+        },
+        {
+          "id": "q3",
+          "text": "Which annotation automatically injects dependencies managed by Spring IoC container?",
+          "options": ["@Inject", "@Autowired", "@Resource", "@Bean"],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "id": "quiz-docker",
+      "skill": "Docker",
+      "title": "Docker Containers & Compose Assessment",
+      "description": "Evaluate container management, Dockerfile instructions, network bridging, and container volume persistence.",
+      "readiness_boost": 4,
+      "questions": [
+        {
+          "id": "q1",
+          "text": "Which Dockerfile command specifies the default command executed when running a container?",
+          "options": ["RUN", "CMD", "EXPOSE", "ENTRYPOINT"],
+          "correct_index": 1
+        },
+        {
+          "id": "q2",
+          "text": "What flag is used with `docker run` to run a container in detached background mode?",
+          "options": ["-d", "-b", "-bg", "-p"],
+          "correct_index": 0
+        },
+        {
+          "id": "q3",
+          "text": "Which command builds an image from a Dockerfile in the current directory?",
+          "options": ["docker create .", "docker build -t myapp .", "docker image make .", "docker run -b ."],
+          "correct_index": 1
+        }
+      ]
+    },
+    {
+      "id": "quiz-pandas",
+      "skill": "Pandas",
+      "title": "Pandas Data Wrangling Assessment",
+      "description": "Test data manipulation skills using DataFrame indexing, group-by aggregations, and missing value imputation.",
+      "readiness_boost": 5,
+      "questions": [
+        {
+          "id": "q1",
+          "text": "Which Pandas function is used to read data from a CSV file into a DataFrame?",
+          "options": ["pd.read_csv()", "pd.load_csv()", "pd.open_csv()", "pd.from_csv()"],
+          "correct_index": 0
+        },
+        {
+          "id": "q2",
+          "text": "How do you select rows based on conditional boolean indexing in a DataFrame `df`?",
+          "options": ["df.filter(col == val)", "df[df['col'] == val]", "df.where('col == val')", "df.search(col=val)"],
+          "correct_index": 1
+        }
+      ]
+    }
+  ]
+}

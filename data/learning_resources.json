@@ -1,0 +1,100 @@
+{
+  "resources": [
+    {
+      "id": "res-1",
+      "skill": "Spring Boot",
+      "title": "Spring Boot 3 & Spring Framework Masterclass",
+      "type": "Interactive Course",
+      "provider": "FreeCodeCamp / Coursera",
+      "duration": "14 hours",
+      "difficulty": "Intermediate",
+      "url": "https://spring.io/guides",
+      "practical_task": "Build a RESTful CRUD microservice using Spring Boot and H2 database.",
+      "priority": "HIGH"
+    },
+    {
+      "id": "res-2",
+      "skill": "Docker",
+      "title": "Docker & Containerization Fundamentals for Developers",
+      "type": "Hands-on Workshop",
+      "provider": "Docker Docs & YouTube",
+      "duration": "8 hours",
+      "difficulty": "Beginner-Intermediate",
+      "url": "https://docs.docker.com/get-started/",
+      "practical_task": "Create a multi-container Dockerfile and docker-compose setup for web app.",
+      "priority": "HIGH"
+    },
+    {
+      "id": "res-3",
+      "skill": "Pandas",
+      "title": "Data Analysis with Python Pandas & Data Wrangling",
+      "type": "Interactive Tutorial",
+      "provider": "Kaggle Learn / DataCamp",
+      "duration": "10 hours",
+      "difficulty": "Intermediate",
+      "url": "https://pandas.pydata.org/docs/user_guide/",
+      "practical_task": "Load a 100k row CSV dataset, perform data cleaning, and generate aggregated metrics.",
+      "priority": "HIGH"
+    },
+    {
+      "id": "res-4",
+      "skill": "Statistics",
+      "title": "Practical Statistics for Data Scientists & Analytics",
+      "type": "Video Course & Notebooks",
+      "provider": "Khan Academy / MIT OpenCourseWare",
+      "duration": "12 hours",
+      "difficulty": "Intermediate",
+      "url": "https://www.khanacademy.org/math/statistics-probability",
+      "practical_task": "Calculate mean, standard deviation, confidence intervals, and hypothesis testing on sample data.",
+      "priority": "HIGH"
+    },
+    {
+      "id": "res-5",
+      "skill": "Machine Learning",
+      "title": "Applied Machine Learning with Scikit-Learn",
+      "type": "Project-based Course",
+      "provider": "Coursera / Andrew Ng",
+      "duration": "20 hours",
+      "difficulty": "Intermediate-Advanced",
+      "url": "https://scikit-learn.org/stable/tutorial/",
+      "practical_task": "Train a Random Forest classifier and evaluate precision/recall metrics.",
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "res-6",
+      "skill": "TypeScript",
+      "title": "TypeScript Essentials for Modern React Developers",
+      "type": "Interactive Tutorial",
+      "provider": "TypeScript Docs",
+      "duration": "6 hours",
+      "difficulty": "Beginner-Intermediate",
+      "url": "https://www.typescriptlang.org/docs/",
+      "practical_task": "Refactor a JS React project to TypeScript with strict type definitions.",
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "res-7",
+      "skill": "FastAPI",
+      "title": "FastAPI Python Web Development Crash Course",
+      "type": "Video Course",
+      "provider": "FastAPI Docs",
+      "duration": "8 hours",
+      "difficulty": "Intermediate",
+      "url": "https://fastapi.tiangolo.com/tutorial/",
+      "practical_task": "Build async REST endpoints with Pydantic validation and auto Swagger UI.",
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "res-8",
+      "skill": "Data Visualization",
+      "title": "Data Storytelling with Matplotlib & Seaborn",
+      "type": "Hands-on Guide",
+      "provider": "Kaggle Learn",
+      "duration": "6 hours",
+      "difficulty": "Beginner",
+      "url": "https://seaborn.pydata.org/tutorial.html",
+      "practical_task": "Generate violin plots, heatmaps, and trend charts from sales dataset.",
+      "priority": "MEDIUM"
+    }
+  ]
+}

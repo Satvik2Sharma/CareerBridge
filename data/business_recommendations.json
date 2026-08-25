@@ -1,0 +1,123 @@
+{
+  "msme_presets": [
+    {
+      "business_type": "Clothing Store",
+      "name": "Local Clothing Store",
+      "owner_name": "Rajesh Kumar",
+      "location": "Roorkee, Uttarakhand",
+      "employees_count": 3,
+      "monthly_orders": 250,
+      "current_tech": ["WhatsApp", "Excel"],
+      "challenges": ["Inventory tracking", "Customer retention", "Marketing", "Online sales"],
+      "base_maturity": 42,
+      "category_scores": {
+        "Payments": 80,
+        "Inventory": 20,
+        "Online Presence": 30,
+        "Analytics": 10,
+        "Marketing": 50,
+        "Cybersecurity": 40
+      }
+    },
+    {
+      "business_type": "Restaurant / Cafe",
+      "name": "Spice Route Eatery",
+      "owner_name": "Priya Sharma",
+      "location": "Dehradun, Uttarakhand",
+      "employees_count": 6,
+      "monthly_orders": 800,
+      "current_tech": ["Cash", "Paper Bills"],
+      "challenges": ["Table ordering speed", "Food waste tracking", "Online food delivery", "Customer repeat visits"],
+      "base_maturity": 28,
+      "category_scores": {
+        "Payments": 40,
+        "Inventory": 15,
+        "Online Presence": 20,
+        "Analytics": 10,
+        "Marketing": 30,
+        "Cybersecurity": 20
+      }
+    },
+    {
+      "business_type": "Grocery Store",
+      "name": "Fresh Mart Kirana",
+      "owner_name": "Amit Gupta",
+      "location": "Roorkee, Uttarakhand",
+      "employees_count": 2,
+      "monthly_orders": 600,
+      "current_tech": ["UPI QR", "Notebook Ledger"],
+      "challenges": ["Supplier stock tracking", "Home delivery orders", "Margin calculation"],
+      "base_maturity": 35,
+      "category_scores": {
+        "Payments": 70,
+        "Inventory": 10,
+        "Online Presence": 15,
+        "Analytics": 10,
+        "Marketing": 25,
+        "Cybersecurity": 30
+      }
+    }
+  ],
+  "recommendations_catalog": [
+    {
+      "id": "rec-1",
+      "title": "Digital Payments Integration",
+      "category": "Payments",
+      "problem": "Manual cash transactions and delayed payments slow down checkout and increase accounting errors.",
+      "solution": "Deploy integrated UPI QR codes, POS machine, and automatic payment link notifications.",
+      "expected_benefit": "Accelerates customer checkout by 60% and eliminates cash handling errors.",
+      "effort": "LOW",
+      "impact": "HIGH",
+      "priority": 1,
+      "cost_category": "Free / Very Low"
+    },
+    {
+      "id": "rec-2",
+      "title": "Digital Inventory Management",
+      "category": "Inventory",
+      "problem": "Manual Excel or notebook stock tracking leads to out-of-stock items and over-purchasing slow-moving goods.",
+      "solution": "Implement a cloud-based inventory app (e.g. Vyapar/Khatabook/Zoho Inventory) with barcode scanning.",
+      "expected_benefit": "Reduces inventory stockouts by 45% and automates low-stock alerts.",
+      "effort": "MEDIUM",
+      "impact": "HIGH",
+      "priority": 2,
+      "cost_category": "Low Monthly Sub"
+    },
+    {
+      "id": "rec-3",
+      "title": "WhatsApp Commerce & Online Catalog",
+      "category": "Online Presence",
+      "problem": "Customers cannot browse products remotely, missing out on weekend and local delivery sales.",
+      "solution": "Create a WhatsApp Business digital catalog and mini e-commerce webpage.",
+      "expected_benefit": "Expands local customer reach and generates 25-35% additional monthly digital orders.",
+      "effort": "MEDIUM",
+      "impact": "HIGH",
+      "priority": 3,
+      "cost_category": "Free / Low"
+    },
+    {
+      "id": "rec-4",
+      "title": "Targeted Social Media & Festival Marketing",
+      "category": "Marketing",
+      "problem": "Relying purely on foot traffic limits brand awareness to immediate physical neighbors.",
+      "solution": "Launch Instagram & Google Business profile with weekly product showcases and local targeted ads.",
+      "expected_benefit": "Drives 50+ new store visits per month and builds brand recognition in Roorkee.",
+      "effort": "MEDIUM",
+      "impact": "MEDIUM",
+      "priority": 4,
+      "cost_category": "Low Spend"
+    },
+    {
+      "id": "rec-5",
+      "title": "Customer Analytics & CRM Insights",
+      "category": "Analytics",
+      "problem": "No insights on top repeat buyers, purchase frequencies, or fast-selling product categories.",
+      "solution": "Use simple CRM tracking to log purchase history and send personalized WhatsApp promotion offers.",
+      "expected_benefit": "Increases repeat customer retention rate by up to 30%.",
+      "effort": "MEDIUM",
+      "impact": "MEDIUM",
+      "priority": 5,
+      "cost_category": "Low"
+    }
+  ]
+}

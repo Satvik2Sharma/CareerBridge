@@ -1,0 +1,244 @@
+{
+  "skills": [
+    {
+      "id": "skill-1",
+      "name": "Python",
+      "category": "Programming Languages",
+      "aliases": ["python", "python3", "py", "python programming"]
+    },
+    {
+      "id": "skill-2",
+      "name": "JavaScript",
+      "category": "Programming Languages",
+      "aliases": ["js", "javascript", "ecmascript", "es6"]
+    },
+    {
+      "id": "skill-3",
+      "name": "TypeScript",
+      "category": "Programming Languages",
+      "aliases": ["ts", "typescript"]
+    },
+    {
+      "id": "skill-4",
+      "name": "Java",
+      "category": "Programming Languages",
+      "aliases": ["java", "core java", "java 8", "java 17"]
+    },
+    {
+      "id": "skill-5",
+      "name": "C++",
+      "category": "Programming Languages",
+      "aliases": ["cpp", "cplusplus", "c++"]
+    },
+    {
+      "id": "skill-6",
+      "name": "SQL",
+      "category": "Databases",
+      "aliases": ["sql", "structured query language", "relational databases"]
+    },
+    {
+      "id": "skill-7",
+      "name": "PostgreSQL",
+      "category": "Databases",
+      "aliases": ["postgres", "postgresql", "pg"]
+    },
+    {
+      "id": "skill-8",
+      "name": "MongoDB",
+      "category": "Databases",
+      "aliases": ["mongo", "mongodb", "nosql"]
+    },
+    {
+      "id": "skill-9",
+      "name": "React",
+      "category": "Frontend Development",
+      "aliases": ["react", "reactjs", "react.js"]
+    },
+    {
+      "id": "skill-10",
+      "name": "HTML5 & CSS3",
+      "category": "Frontend Development",
+      "aliases": ["html", "css", "html5", "css3", "web fundamentals"]
+    },
+    {
+      "id": "skill-11",
+      "name": "Tailwind CSS",
+      "category": "Frontend Development",
+      "aliases": ["tailwind", "tailwindcss"]
+    },
+    {
+      "id": "skill-12",
+      "name": "Next.js",
+      "category": "Frontend Development",
+      "aliases": ["next", "nextjs", "next.js"]
+    },
+    {
+      "id": "skill-13",
+      "name": "Node.js",
+      "category": "Backend Development",
+      "aliases": ["node", "nodejs", "node.js"]
+    },
+    {
+      "id": "skill-14",
+      "name": "Express.js",
+      "category": "Backend Development",
+      "aliases": ["express", "expressjs"]
+    },
+    {
+      "id": "skill-15",
+      "name": "Spring Boot",
+      "category": "Backend Development",
+      "aliases": ["spring", "springboot", "spring boot", "java spring"]
+    },
+    {
+      "id": "skill-16",
+      "name": "FastAPI",
+      "category": "Backend Development",
+      "aliases": ["fastapi", "fast api"]
+    },
+    {
+      "id": "skill-17",
+      "name": "REST APIs",
+      "category": "Backend Development",
+      "aliases": ["rest", "rest api", "restful api", "restful apis"]
+    },
+    {
+      "id": "skill-18",
+      "name": "GraphQL",
+      "category": "Backend Development",
+      "aliases": ["graphql", "gql"]
+    },
+    {
+      "id": "skill-19",
+      "name": "Docker",
+      "category": "DevOps & Cloud",
+      "aliases": ["docker", "containers", "dockerization"]
+    },
+    {
+      "id": "skill-20",
+      "name": "Kubernetes",
+      "category": "DevOps & Cloud",
+      "aliases": ["k8s", "kubernetes"]
+    },
+    {
+      "id": "skill-21",
+      "name": "AWS",
+      "category": "DevOps & Cloud",
+      "aliases": ["aws", "amazon web services", "aws cloud"]
+    },
+    {
+      "id": "skill-22",
+      "name": "CI/CD",
+      "category": "DevOps & Cloud",
+      "aliases": ["cicd", "ci/cd", "continuous integration", "github actions"]
+    },
+    {
+      "id": "skill-23",
+      "name": "Git",
+      "category": "Tools & Version Control",
+      "aliases": ["git", "github", "version control", "gitlab"]
+    },
+    {
+      "id": "skill-24",
+      "name": "Pandas",
+      "category": "Data Science & AI",
+      "aliases": ["pandas", "python pandas"]
+    },
+    {
+      "id": "skill-25",
+      "name": "NumPy",
+      "category": "Data Science & AI",
+      "aliases": ["numpy", "python numpy"]
+    },
+    {
+      "id": "skill-26",
+      "name": "Machine Learning",
+      "category": "Data Science & AI",
+      "aliases": ["ml", "machine learning", "sklearn", "scikit-learn"]
+    },
+    {
+      "id": "skill-27",
+      "name": "Deep Learning",
+      "category": "Data Science & AI",
+      "aliases": ["dl", "deep learning", "neural networks", "pytorch", "tensorflow"]
+    },
+    {
+      "id": "skill-28",
+      "name": "Statistics",
+      "category": "Data Science & AI",
+      "aliases": ["stats", "statistics", "statistical analysis", "probability"]
+    },
+    {
+      "id": "skill-29",
+      "name": "Data Visualization",
+      "category": "Data Science & AI",
+      "aliases": ["data viz", "data visualization", "matplotlib", "seaborn"]
+    },
+    {
+      "id": "skill-30",
+      "name": "Tableau",
+      "category": "Data Science & AI",
+      "aliases": ["tableau", "tableau desktop"]
+    },
+    {
+      "id": "skill-31",
+      "name": "Power BI",
+      "category": "Data Science & AI",
+      "aliases": ["power bi", "powerbi", "microsoft power bi"]
+    },
+    {
+      "id": "skill-32",
+      "name": "Figma",
+      "category": "UI/UX Design",
+      "aliases": ["figma", "figma design", "ui design"]
+    },
+    {
+      "id": "skill-33",
+      "name": "Wireframing & Prototyping",
+      "category": "UI/UX Design",
+      "aliases": ["wireframing", "prototyping", "ux design", "user flows"]
+    },
+    {
+      "id": "skill-34",
+      "name": "Digital Marketing",
+      "category": "Business & Marketing",
+      "aliases": ["digital marketing", "online marketing"]
+    },
+    {
+      "id": "skill-35",
+      "name": "SEO",
+      "category": "Business & Marketing",
+      "aliases": ["seo", "search engine optimization"]
+    },
+    {
+      "id": "skill-36",
+      "name": "Social Media Marketing",
+      "category": "Business & Marketing",
+      "aliases": ["smm", "social media", "instagram marketing", "facebook ads"]
+    },
+    {
+      "id": "skill-37",
+      "name": "Excel",
+      "category": "Tools & Productivity",
+      "aliases": ["excel", "ms excel", "microsoft excel", "spreadsheets"]
+    },
+    {
+      "id": "skill-38",
+      "name": "Digital Payments",
+      "category": "MSME Technology",
+      "aliases": ["upi", "digital payments", "payment gateway", "qr code payments"]
+    },
+    {
+      "id": "skill-39",
+      "name": "Inventory Management",
+      "category": "MSME Technology",
+      "aliases": ["inventory tracking", "stock management", "inventory management"]
+    },
+    {
+      "id": "skill-40",
+      "name": "E-commerce Catalog",
+      "category": "MSME Technology",
+      "aliases": ["online store", "e-commerce store", "digital catalog", "whatsapp store"]
+    }
+  ]
+}
