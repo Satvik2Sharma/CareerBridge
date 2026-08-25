@@ -12,7 +12,7 @@ It provides dual intelligence modules:
 ## 2. Monorepo Architecture
 
 ```text
-Hackathon-10.0/
+CareerBridge/
 ├── frontend/             # Vite + React 18 + TypeScript + Tailwind CSS + Lucide Icons + Recharts
 ├── backend/              # Python 3.12 + FastAPI + SQLAlchemy + Pydantic v2 + PyPDF2/pypdf
 ├── data/                 # Seed JSON datasets (jobs, careers, skills taxonomy, resources, assessments, MSME benchmarks)
