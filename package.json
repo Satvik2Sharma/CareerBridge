@@ -1,0 +1,11 @@
+{
+  "name": "careerbridge",
+  "version": "1.0.0",
+  "description": "CareerBridge — AI-Powered Career & Business Intelligence Platform",
+  "scripts": {
+    "dev": "bash start.sh",
+    "start": "bash start.sh",
+    "backend": "PYTHONPATH=backend ./venv/bin/python -m uvicorn app.main:app --reload --port 8000",
+    "frontend": "cd frontend && npm run dev"
+  }
+}
